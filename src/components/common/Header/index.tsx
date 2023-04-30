@@ -1,95 +1,87 @@
-import CloseIcon from "@mui/icons-material/Close";
 import MenuIcon from "@mui/icons-material/Menu";
-import {
-  Box,
-  Button,
-  Hidden,
-  IconButton,
-  Link as MuiLink,
-} from "@mui/material";
+import { Box, Hidden, IconButton, Typography } from "@mui/material";
 import Logo from "components/common/Logo";
 import MobileNavbarDrawer from "components/common/MobileNavbarDrawer";
-import { getAuth, signOut } from "firebase/auth";
-import { useTranslation } from "next-i18next";
-import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
-import { toast } from "react-hot-toast";
 import { useSelector } from "react-redux";
 import type { ApplicationState } from "store";
+import Auth from "./Auth";
 
 export const Header = () => {
-  const { t } = useTranslation("common");
-  const { isAuth, profile } = useSelector(
-    (state: ApplicationState) => state.user
-  );
-
   const [isMobileNavbarDrawerOpen, setIsMobileNavbarDrawerOpen] =
     useState<boolean>(false);
 
-  const handleSignOut = async () => {
-    try {
-      await signOut(getAuth());
-    } catch (error) {
-      toast.error("Something went wrong");
-    }
-  };
+  const { heroImage } = useSelector((state: ApplicationState) => state.app);
 
   return (
     <Box
       component="header"
       sx={{
-        height: 60,
-        px: 2,
+        height: 420,
+        backgroundImage: `url(${heroImage})`,
         display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        position: "sticky",
-        top: 0,
-        left: 0,
-        zIndex: "appBar",
-        bgcolor: "background.default",
+        flexDirection: "column",
+        position: "relative",
+        "::after": {
+          content: "''",
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          backgroundColor: "rgba(0,0,0,0.5)",
+        },
       }}
     >
-      <Logo />
-      <Box display="flex" alignItems="center">
-        {isAuth ? (
-          <Box display="flex" alignItems="center" gap={1} ml={1}>
-            <MuiLink href="/profile" component={Link} display="flex">
-              <Image
-                style={{ borderRadius: "50%" }}
-                src={profile?.image}
-                width={30}
-                height={30}
-                alt=""
-              />
-            </MuiLink>
-            <Button onClick={() => handleSignOut()} variant="text">
-              {t("signOut")}
-            </Button>
-          </Box>
-        ) : (
-          <Button variant="text" component={Link} href="/auth/sign-in">
-            {t("signIn")}
-          </Button>
-        )}
-
-        <Hidden smUp>
-          <IconButton
-            onClick={() => setIsMobileNavbarDrawerOpen((prev) => !prev)}
-          >
-            {!isMobileNavbarDrawerOpen ? (
+      <Box
+        sx={{
+          height: 80,
+          px: 2,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          position: "relative",
+          zIndex: 1,
+        }}
+        component="nav"
+      >
+        <Logo />
+        <Box display="flex" alignItems="center">
+          <Auth />
+          <Hidden smUp>
+            <IconButton
+              onClick={() => setIsMobileNavbarDrawerOpen((prev) => !prev)}
+            >
               <MenuIcon fontSize="large" />
-            ) : (
-              <CloseIcon fontSize="large" />
-            )}
-          </IconButton>
-        </Hidden>
+            </IconButton>
+          </Hidden>
+        </Box>
+        {isMobileNavbarDrawerOpen && (
+          <MobileNavbarDrawer
+            isDrawer={isMobileNavbarDrawerOpen}
+            setIsDrawer={setIsMobileNavbarDrawerOpen}
+          />
+        )}
       </Box>
-      <MobileNavbarDrawer
-        isDrawer={isMobileNavbarDrawerOpen}
-        setIsDrawer={setIsMobileNavbarDrawerOpen}
-      />
+      <Box
+        flex={1}
+        position="relative"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        px={2}
+        zIndex={1}
+      >
+        <Typography
+          textAlign="center"
+          variant="h1"
+          color="primary.contrastText"
+          letterSpacing={2}
+          fontSize={64}
+        >
+          NEVER STOP LEARNING
+        </Typography>
+      </Box>
     </Box>
   );
 };

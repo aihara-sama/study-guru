@@ -4,10 +4,12 @@ import type { ThemeType } from "theme";
 
 export interface AppState {
   theme: ThemeType;
+  heroImage: string;
 }
 
 const initialState: AppState = {
   theme: "light",
+  heroImage: process.env.DEFAULT_HERO_IMAGE,
 };
 
 export const appSlice = createSlice({
@@ -16,6 +18,9 @@ export const appSlice = createSlice({
   reducers: {
     setTheme: (state, action: PayloadAction<ThemeType>) => {
       state.theme = action.payload;
+    },
+    setHeroImage: (state, action: PayloadAction<string>) => {
+      state.heroImage = action.payload;
     },
   },
 });

@@ -18,8 +18,16 @@ module.exports = withBundleAnalyzer({
     FIREBASE_APP_ID: process.env.FIREBASE_APP_ID,
     FIREBASE_MEASUREMENT_ID: process.env.FIREBASE_MEASUREMENT_ID,
     FIREBASE_DATABASE_URL: process.env.FIREBASE_DATABASE_URL,
+    CONTENTFUL_SPACE_ID: process.env.CONTENTFUL_SPACE_ID,
+    CONTENTFUL_CONETNT_DELIVERY_TOKEN:
+      process.env.CONTENTFUL_CONETNT_DELIVERY_TOKEN,
+    CONTENTFUL_CONETNT_PREVIEW_TOKEN:
+      process.env.CONTENTFUL_CONETNT_PREVIEW_TOKEN,
+    CONTENTFUL_PERSONAL_ACCESS_TOKEN:
+      process.env.CONTENTFUL_PERSONAL_ACCESS_TOKEN,
+    DEFAULT_HERO_IMAGE: process.env.DEFAULT_HERO_IMAGE,
   },
   images: {
-    domains: ["lh3.googleusercontent.com"],
+    domains: ["lh3.googleusercontent.com", "images.ctfassets.net"],
   },
 });

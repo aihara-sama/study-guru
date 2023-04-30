@@ -5,7 +5,7 @@ import { Header } from "../Header";
 
 export const Layout: FC<PropsWithChildren> = ({ children }) => {
   return (
-    <Box component="main" height="100%">
+    <Box component="main" height="100%" pb={4}>
       <Header />
       <Container component="section" sx={{ height: "calc(100% - 60px)" }}>
         {children}

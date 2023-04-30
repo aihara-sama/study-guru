@@ -1,10 +1,13 @@
-import { Box } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
+import CourseCard from "components/common/CourseCard";
 import { Layout } from "components/common/Layout";
-import type { GetStaticProps } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { OrganizationJsonLd } from "next-seo";
+import { contentfulClient } from "services/contentful";
+import type { ICourseFields } from "types/contentful";
 
-const Index = () => {
+const Index: NextPage<{ courses: ICourseFields[] }> = ({ courses }) => {
   return (
     <Layout>
       <OrganizationJsonLd
@@ -32,22 +35,33 @@ const Index = () => {
         sameAs={["https://study-guru.com"]}
         url="https://study-guru.com"
       />
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100%",
-        }}
-      ></Box>
+      <Typography my={2} variant="h2" color="text.secondary">
+        Courses
+      </Typography>
+
+      <Grid container spacing={3}>
+        {courses.map((course, idx) => (
+          <Grid key={idx} item xs={12} sm={6} md={4} lg={3}>
+            <CourseCard course={course} />
+          </Grid>
+        ))}
+      </Grid>
     </Layout>
   );
 };
 
-export const getStaticProps: GetStaticProps = async ({ locale }) => ({
-  props: {
-    ...(await serverSideTranslations(locale ?? "en")),
-  },
-});
+export const getStaticProps: GetStaticProps = async ({ locale }) => {
+  const { items } = await contentfulClient.getEntries({
+    content_type: "course",
+  });
+
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? "en")),
+      courses: items.map((item) => item.fields) as unknown as ICourseFields[],
+    },
+    revalidate: 1,
+  };
+};
 
 export default Index;
