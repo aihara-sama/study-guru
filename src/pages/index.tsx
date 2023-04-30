@@ -9,10 +9,10 @@ const Index = () => {
     <Layout>
       <OrganizationJsonLd
         type="Corporation"
-        id="https://example.com"
-        logo="https://example.com/static/media/logo.png"
-        legalName="Example Private Limited"
-        name="example"
+        id="https://study-guru.com"
+        logo="https://study-guru.com/static/media/logo.png"
+        legalName="Study Guru Private Limited"
+        name="Study Guru"
         address={{
           streetAddress: "xxx",
           addressLocality: "xxx",
@@ -29,8 +29,8 @@ const Index = () => {
             availableLanguage: ["English"],
           },
         ]}
-        sameAs={["https://example.com"]}
-        url="https://example.com"
+        sameAs={["https://study-guru.com"]}
+        url="https://study-guru.com"
       />
       <Box
         sx={{

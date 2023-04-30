@@ -7,10 +7,8 @@ import {
   IconButton,
   Link as MuiLink,
 } from "@mui/material";
-import { LanguageToggle } from "components/common/LanguageToggle";
 import Logo from "components/common/Logo";
 import MobileNavbarDrawer from "components/common/MobileNavbarDrawer";
-import { ThemeToggle } from "components/common/ThemeToggle";
 import { getAuth, signOut } from "firebase/auth";
 import { useTranslation } from "next-i18next";
 import Image from "next/image";
@@ -46,8 +44,6 @@ export const Header = () => {
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
-        borderBottom: "1px solid",
-        borderColor: "divider",
         position: "sticky",
         top: 0,
         left: 0,
@@ -57,8 +53,6 @@ export const Header = () => {
     >
       <Logo />
       <Box display="flex" alignItems="center">
-        <LanguageToggle />
-        <ThemeToggle />
         {isAuth ? (
           <Box display="flex" alignItems="center" gap={1} ml={1}>
             <MuiLink href="/profile" component={Link} display="flex">

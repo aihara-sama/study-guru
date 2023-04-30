@@ -6,24 +6,24 @@ const background: PaletteOptions["background"] = {
 };
 
 const text: PaletteOptions["text"] = {
-  primary: "rgba(0, 0, 0, 0.87)",
-  secondary: "rgba(0, 0, 0, 0.6)",
-  disabled: "rgba(0, 0, 0, 0.38)",
+  primary: "#000000de",
+  secondary: "#00000099",
+  disabled: "#00000061",
 };
 
-const divider: PaletteOptions["divider"] = "rgba(0, 0, 0, 0.12)";
+const divider: PaletteOptions["divider"] = "#EEEEEE";
 
 const primary: PaletteOptions["primary"] = {
-  main: "#1976d2",
-  light: "#42a5f5",
-  dark: "#1565c0",
-  contrastText: "#fff",
+  main: "#13A8D8",
+  light: "#16BDF3",
+  dark: "#1396C0",
+  contrastText: "#ECECEC",
 };
 
 const secondary: PaletteOptions["secondary"] = {
-  main: "#9c27b0",
-  light: "#ba68c8",
-  dark: "#7b1fa2",
+  main: "#E1E1E1",
+  light: "#F9F9F9",
+  dark: "#B4B4B4",
   contrastText: "#fff",
 };
 
@@ -56,15 +56,15 @@ const success: PaletteOptions["success"] = {
 };
 
 const action: PaletteOptions["action"] = {
-  active: "rgba(0, 0, 0, 0.54)",
-  hover: "rgba(0, 0, 0, 0.04)",
+  active: "#0000008a",
+  hover: "#0000000a",
   hoverOpacity: 0.04,
-  selected: "rgba(0, 0, 0, 0.08)",
+  selected: "#00000014",
   selectedOpacity: 0.08,
-  disabled: "rgba(0, 0, 0, 0.26)",
-  disabledBackground: "rgba(0, 0, 0, 0.12)",
+  disabled: "#00000042",
+  disabledBackground: "#0000001f",
   disabledOpacity: 0.38,
-  focus: "rgba(0, 0, 0, 0.12)",
+  focus: "#0000001f",
   focusOpacity: 0.12,
   activatedOpacity: 0.12,
 };
