@@ -4,10 +4,18 @@ import { Layout } from "components/common/Layout";
 import type { GetStaticProps, NextPage } from "next";
 import { serverSideTranslations } from "next-i18next/serverSideTranslations";
 import { OrganizationJsonLd } from "next-seo";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { contentfulClient } from "services/contentful";
-import type { ICourseFields } from "types/contentful";
+import { setHeroImage } from "slices/app.slice";
+import type { ICourseFields, IEntry } from "types/contentful";
 
-const Index: NextPage<{ courses: ICourseFields[] }> = ({ courses }) => {
+const Index: NextPage<{ courses: IEntry<ICourseFields>[] }> = ({ courses }) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setHeroImage(process.env.DEFAULT_HERO_IMAGE));
+  }, []);
+
   return (
     <Layout>
       <OrganizationJsonLd
@@ -51,14 +59,17 @@ const Index: NextPage<{ courses: ICourseFields[] }> = ({ courses }) => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => {
-  const { items } = await contentfulClient.getEntries({
+  const entries = await contentfulClient.getEntries<{
+    fields: ICourseFields;
+    contentTypeId: "course";
+  }>({
     content_type: "course",
   });
 
   return {
     props: {
       ...(await serverSideTranslations(locale ?? "en")),
-      courses: items.map((item) => item.fields) as unknown as ICourseFields[],
+      courses: entries.items.map((item) => item),
     },
     revalidate: 1,
   };

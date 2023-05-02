@@ -1,10 +1,10 @@
 import { Box, Link as MuiLink, Typography, useTheme } from "@mui/material";
 import Link from "next/link";
 import type { FunctionComponent } from "react";
-import type { ICourseFields } from "types/contentful";
+import type { ICourseFields, IEntry } from "types/contentful";
 
 interface ICourseCardProps {
-  course: ICourseFields;
+  course: IEntry<ICourseFields>;
 }
 
 const CourseCard: FunctionComponent<ICourseCardProps> = ({ course }) => {
@@ -12,15 +12,15 @@ const CourseCard: FunctionComponent<ICourseCardProps> = ({ course }) => {
   return (
     <MuiLink
       component={Link}
-      href={`/courses/${course.slug}`}
+      href={`/courses/${course.fields.slug}`}
       color="inherit"
       underline="none"
     >
       <Box height={{ xs: 300, sm: 130 }}>
         <Box
           component="img"
-          alt={course.thumbnail.fields.title}
-          src={`https:${course.thumbnail.fields.file.url}`}
+          alt={course.fields.thumbnail.fields.title}
+          src={`https:${course.fields.thumbnail.fields.file.url}`}
           sx={{
             border: `1px solid ${theme.palette.secondary.light}`,
             borderBottom: "none",
@@ -32,7 +32,7 @@ const CourseCard: FunctionComponent<ICourseCardProps> = ({ course }) => {
       </Box>
       <Box p={2} bgcolor="secondary.light" height={{ xs: 250, sm: 190 }}>
         <Typography
-          title={course.title}
+          title={course.fields.title}
           mb={1}
           fontSize={20}
           fontWeight="bold"
@@ -44,11 +44,11 @@ const CourseCard: FunctionComponent<ICourseCardProps> = ({ course }) => {
             overflow: "hidden",
           }}
         >
-          {course.title}
+          {course.fields.title}
         </Typography>
 
         <Typography
-          title={course.description}
+          title={course.fields.description}
           color="text.secondary"
           fontSize={16}
           sx={{
@@ -58,7 +58,7 @@ const CourseCard: FunctionComponent<ICourseCardProps> = ({ course }) => {
             overflow: "hidden",
           }}
         >
-          {course.description}
+          {course.fields.description}
         </Typography>
       </Box>
     </MuiLink>

@@ -19,6 +19,9 @@ export const Header = () => {
       sx={{
         height: 420,
         backgroundImage: `url(${heroImage})`,
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         display: "flex",
         flexDirection: "column",
         position: "relative",
