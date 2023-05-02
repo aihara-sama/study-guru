@@ -1,0 +1,50 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Note {
+  id        String   @id @default(uuid())
+  text      String
+  userId    String
+  lessonId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Review {
+  id        String   @id @default(uuid())
+  text      String
+  userId    String
+  lessonId  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Question {
+  id        String         @id @default(uuid())
+  text      String
+  reply     QuestionReply?
+  userId    String
+  lessonId  String
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+}
+
+model QuestionReply {
+  id         String   @id @default(uuid())
+  text       String
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  questionId String   @unique
+  userId     String
+  lessonId   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
