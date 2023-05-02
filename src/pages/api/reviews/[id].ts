@@ -1,9 +1,9 @@
-import type { Note, Prisma } from "@prisma/client";
+import type { Prisma, Review } from "@prisma/client";
 import type { NextApiRequest, NextApiResponse } from "next";
 import prismaClient from "services/prisma";
 
 interface IResponseSuccessData {
-  data: Note;
+  data: Review;
 }
 interface IResponseFailureData {
   error: string;
@@ -14,26 +14,26 @@ const handler = async (
   res: NextApiResponse<IResponseSuccessData | IResponseFailureData>
 ) => {
   try {
-    // Note exists check
-    const note = await prismaClient.note.findUnique({
+    // Review exists check
+    const review = await prismaClient.review.findUnique({
       where: {
         id: req.query.id as string,
       },
     });
 
-    if (!note) {
-      return res.status(404).json({ error: "Note Not Found" });
+    if (!review) {
+      return res.status(404).json({ error: "Review Not Found" });
     }
 
     // GET
     if (req.method === "GET") {
-      return res.status(200).json({ data: note });
+      return res.status(200).json({ data: review });
     }
     // PATCH
     if (req.method === "PATCH") {
-      const payload: Pick<Prisma.NoteCreateInput, "id" | "text"> = req.body;
+      const payload: Pick<Prisma.ReviewCreateInput, "id" | "text"> = req.body;
 
-      const result = await prismaClient.note.update({
+      const result = await prismaClient.review.update({
         where: {
           id: req.query.id as string,
         },
@@ -43,7 +43,7 @@ const handler = async (
     }
     // DELETE
     if (req.method === "DELETE") {
-      const result = await prismaClient.note.delete({
+      const result = await prismaClient.review.delete({
         where: {
           id: req.query.id as string,
         },
