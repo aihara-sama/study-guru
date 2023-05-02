@@ -31,7 +31,8 @@ const handler = async (
     }
     // PATCH
     if (req.method === "PATCH") {
-      const payload: Pick<Prisma.ReviewCreateInput, "id" | "text"> = req.body;
+      const payload: Pick<Prisma.ReviewUpdateInput, "text" | "userImage"> =
+        req.body;
 
       const result = await prismaClient.review.update({
         where: {

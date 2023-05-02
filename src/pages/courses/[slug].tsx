@@ -69,12 +69,6 @@ const CoursePage: NextPage<ICoursePageProps> = ({ course }) => {
     setValue(newValue);
   };
 
-  console.log({
-    course,
-    router,
-    currentLesson,
-  });
-
   useEffect(() => {
     if (course) {
       dispatch(

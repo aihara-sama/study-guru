@@ -14,30 +14,32 @@ const handler = async (
   res: NextApiResponse<IResponseSuccessData | IResponseFailureData>
 ) => {
   try {
-    const payload: Pick<Prisma.NoteCreateInput, "text"> = req.body;
+    const payload: Pick<Prisma.ReviewCreateInput, "text" | "userImage"> =
+      req.body;
 
     const lessonId = req.query["lesson-id"] as string;
     const userId = req.query["user-id"] as string;
-    const reviewText = payload.text as string;
-
-    if (!lessonId || !userId) {
-      return res.status(400).json({ error: "Bad request" });
-    }
+    const { userImage, text: reviewText } = payload;
 
     // GET
     if (req.method === "GET") {
+      if (!lessonId) {
+        return res.status(400).json({ error: "Bad request" });
+      }
       const reviews = await prismaClient.review.findMany({
         where: {
           lessonId,
-          userId,
         },
       });
       return res.status(200).json({ data: reviews });
     }
     // POST
     if (req.method === "POST") {
+      if (!lessonId || !userId) {
+        return res.status(400).json({ error: "Bad request" });
+      }
       const review = await prismaClient.review.create({
-        data: { text: reviewText, userId, lessonId },
+        data: { text: reviewText, userId, lessonId, userImage },
       });
       return res.status(200).json({ data: review });
     }
