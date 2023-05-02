@@ -14,11 +14,12 @@ const handler = async (
   res: NextApiResponse<IResponseSuccessData | IResponseFailureData>
 ) => {
   try {
-    const payload: Pick<Prisma.QuestionCreateInput, "text"> = req.body;
+    const payload: Pick<Prisma.QuestionCreateInput, "text" | "userImage"> =
+      req.body;
 
     const lessonId = req.query["lesson-id"] as string;
     const userId = req.query["user-id"] as string;
-    const questionText = payload.text as string;
+    const { userImage, text: questionText } = payload;
 
     if (!lessonId || !userId) {
       return res.status(400).json({ error: "Bad request" });
@@ -29,7 +30,6 @@ const handler = async (
       const question = await prismaClient.question.findMany({
         where: {
           lessonId,
-          userId,
         },
         include: {
           reply: true,
@@ -40,7 +40,7 @@ const handler = async (
     // POST
     if (req.method === "POST") {
       const question = await prismaClient.question.create({
-        data: { text: questionText, userId, lessonId },
+        data: { text: questionText, userImage, userId, lessonId },
       });
       return res.status(200).json({ data: question });
     }

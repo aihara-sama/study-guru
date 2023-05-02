@@ -31,6 +31,10 @@ const handler = async (
     }
     // PATCH
     if (req.method === "PATCH") {
+      // Check permissions
+      if (review.userId !== (req.query["user-id"] as string)) {
+        return res.status(403).json({ error: "Insufficient permissions" });
+      }
       const payload: Pick<Prisma.ReviewUpdateInput, "text" | "userImage"> =
         req.body;
 
@@ -44,6 +48,11 @@ const handler = async (
     }
     // DELETE
     if (req.method === "DELETE") {
+      // Check permissions
+      if (review.userId !== (req.query["user-id"] as string)) {
+        return res.status(403).json({ error: "Insufficient permissions" });
+      }
+
       const result = await prismaClient.review.delete({
         where: {
           id: req.query.id as string,

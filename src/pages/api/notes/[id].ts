@@ -31,6 +31,10 @@ const handler = async (
     }
     // PATCH
     if (req.method === "PATCH") {
+      // Check permissions
+      if (note.userId !== (req.query["user-id"] as string)) {
+        return res.status(403).json({ error: "Insufficient permissions" });
+      }
       const payload: Pick<Prisma.NoteCreateInput, "id" | "text"> = req.body;
 
       const result = await prismaClient.note.update({
@@ -43,6 +47,10 @@ const handler = async (
     }
     // DELETE
     if (req.method === "DELETE") {
+      // Check permissions
+      if (note.userId !== (req.query["user-id"] as string)) {
+        return res.status(403).json({ error: "Insufficient permissions" });
+      }
       const result = await prismaClient.note.delete({
         where: {
           id: req.query.id as string,

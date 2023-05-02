@@ -34,8 +34,14 @@ const handler = async (
     }
     // PATCH
     if (req.method === "PATCH") {
-      const payload: Pick<Prisma.QuestionReplyCreateInput, "id" | "text"> =
-        req.body;
+      // Check permissions
+      if (questionReply.userId !== (req.query["user-id"] as string)) {
+        return res.status(403).json({ error: "Insufficient permissions" });
+      }
+      const payload: Pick<
+        Prisma.QuestionReplyUpdateInput,
+        "text" | "userImage"
+      > = req.body;
 
       const result = await prismaClient.questionReply.update({
         where: {
@@ -50,6 +56,10 @@ const handler = async (
     }
     // DELETE
     if (req.method === "DELETE") {
+      // Check permissions
+      if (questionReply.userId !== (req.query["user-id"] as string)) {
+        return res.status(403).json({ error: "Insufficient permissions" });
+      }
       const result = await prismaClient.questionReply.delete({
         where: {
           id: req.query.id as string,
