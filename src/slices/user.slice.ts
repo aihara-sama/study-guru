@@ -15,7 +15,10 @@ export interface AppState {
 
 const initialState: AppState = {
   profile: null,
-  isAuth: false,
+  isAuth:
+    typeof window !== "undefined"
+      ? JSON.parse(localStorage.getItem(`study-guru:isAuth`)) || false
+      : false,
 };
 
 export const userSlice = createSlice({
@@ -25,6 +28,7 @@ export const userSlice = createSlice({
     setProfile: (state, action: PayloadAction<IProfile | null>) => {
       state.profile = action.payload;
       state.isAuth = !!action.payload;
+      localStorage.setItem(`study-guru:isAuth`, JSON.stringify(state.isAuth));
     },
   },
 });

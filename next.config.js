@@ -26,6 +26,7 @@ module.exports = withBundleAnalyzer({
     CONTENTFUL_PERSONAL_ACCESS_TOKEN:
       process.env.CONTENTFUL_PERSONAL_ACCESS_TOKEN,
     DEFAULT_HERO_IMAGE: process.env.DEFAULT_HERO_IMAGE,
+    BASE_URL: process.env.BASE_URL,
   },
   images: {
     domains: ["lh3.googleusercontent.com", "images.ctfassets.net"],

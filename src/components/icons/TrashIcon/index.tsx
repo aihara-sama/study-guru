@@ -1,12 +1,15 @@
 import type { FunctionComponent } from "react";
 
-interface ITrashIconProps {}
+interface ITrashIconProps {
+  onClick?: () => void;
+}
 
-const TrashIcon: FunctionComponent<ITrashIconProps> = () => {
+const TrashIcon: FunctionComponent<ITrashIconProps> = ({ onClick }) => {
   return (
     <svg
-      width="10"
-      height="10"
+      onClick={onClick}
+      width="12"
+      height="12"
       viewBox="0 0 10 10"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

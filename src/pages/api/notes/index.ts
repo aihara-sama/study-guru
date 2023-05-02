@@ -31,6 +31,9 @@ const handler = async (
           lessonId,
           userId,
         },
+        orderBy: {
+          createdAt: "desc",
+        },
       });
       return res.status(200).json({ data: notes });
     }

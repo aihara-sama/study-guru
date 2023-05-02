@@ -12,9 +12,7 @@ interface IAuthProps {}
 
 const Auth: FunctionComponent<IAuthProps> = () => {
   const { t } = useTranslation("common");
-  const { isAuth, profile } = useSelector(
-    (state: ApplicationState) => state.user
-  );
+  const { profile } = useSelector((state: ApplicationState) => state.user);
 
   const handleSignOut = async () => {
     try {
@@ -26,7 +24,7 @@ const Auth: FunctionComponent<IAuthProps> = () => {
 
   return (
     <Box>
-      {isAuth ? (
+      {profile ? (
         <Box display="flex" alignItems="center" gap={1} ml={1}>
           <MuiLink href="/profile" component={Link} display="flex">
             <Image

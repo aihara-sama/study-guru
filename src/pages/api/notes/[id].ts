@@ -35,7 +35,7 @@ const handler = async (
       if (note.userId !== (req.query["user-id"] as string)) {
         return res.status(403).json({ error: "Insufficient permissions" });
       }
-      const payload: Pick<Prisma.NoteCreateInput, "id" | "text"> = req.body;
+      const payload: Pick<Prisma.NoteCreateInput, "text"> = req.body;
 
       const result = await prismaClient.note.update({
         where: {
