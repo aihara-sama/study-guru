@@ -9,6 +9,7 @@ import { toast } from "react-hot-toast";
 import { useDeleteNoteMutation, useUpdateNoteMutation } from "services/notes";
 
 import convertDate from "utils/convert-date";
+import focusElement from "utils/focusElement";
 
 interface INoteProps {
   note: INote;
@@ -19,8 +20,40 @@ interface INoteProps {
 const Note: FunctionComponent<INoteProps> = ({ note, onSave, userId }) => {
   const [isEditing, setIsEditing] = useState(false);
   const textRef = useRef<HTMLParagraphElement>(null);
-  const [updateNote] = useUpdateNoteMutation();
-  const [removeNote] = useDeleteNoteMutation();
+  const [updateNote, updateNoteResult] = useUpdateNoteMutation();
+  const [removeNote, removeNoteResult] = useDeleteNoteMutation();
+
+  useEffect(() => {
+    if (updateNoteResult.isError) {
+      toast.error("Something went wrong");
+    }
+  }, [updateNoteResult.isError]);
+
+  useEffect(() => {
+    (async () => {
+      if (updateNoteResult.isSuccess) {
+        toast.success("Note updated successfully");
+        updateNoteResult.reset();
+        await onSave();
+      }
+    })();
+  }, [updateNoteResult.isSuccess]);
+
+  useEffect(() => {
+    if (removeNoteResult.isError) {
+      toast.error("Something went wrong");
+    }
+  }, [removeNoteResult.isError]);
+
+  useEffect(() => {
+    (async () => {
+      if (removeNoteResult.isSuccess) {
+        toast.success("Note removed successfully");
+        removeNoteResult.reset();
+        await onSave();
+      }
+    })();
+  }, [removeNoteResult.isSuccess]);
 
   const handleSaveNote = async () => {
     if (textRef.current.textContent !== note.text) {
@@ -30,8 +63,6 @@ const Note: FunctionComponent<INoteProps> = ({ note, onSave, userId }) => {
           text: textRef.current.textContent,
           userId,
         });
-        await onSave();
-        toast.success("Note updated successfully");
       } catch {
         toast.error("Something went wrong");
       }
@@ -45,8 +76,6 @@ const Note: FunctionComponent<INoteProps> = ({ note, onSave, userId }) => {
         noteId: note.id,
         userId,
       });
-      await onSave();
-      toast.success("Note removed successfully");
     } catch {
       toast.error("Something went wrong");
     }
@@ -54,12 +83,7 @@ const Note: FunctionComponent<INoteProps> = ({ note, onSave, userId }) => {
 
   useEffect(() => {
     if (isEditing) {
-      const range = document.createRange();
-      const selection = window.getSelection();
-      range.selectNodeContents(textRef.current);
-      range.collapse(false);
-      selection.removeAllRanges();
-      selection.addRange(range);
+      focusElement(textRef.current);
     }
   }, [isEditing]);
 

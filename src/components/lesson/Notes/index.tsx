@@ -1,6 +1,7 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { useFormik } from "formik";
 import type { FunctionComponent } from "react";
+import { useEffect } from "react";
 import { toast } from "react-hot-toast";
 import { useCreateNoteMutation, useGetAllNotesQuery } from "services/notes";
 import getErrorProps from "utils/getErrorProps";
@@ -13,7 +14,7 @@ interface INotesProps {
 }
 
 const Notes: FunctionComponent<INotesProps> = ({ userId, lessonId }) => {
-  const [createNote] = useCreateNoteMutation();
+  const [createNote, createNoteResult] = useCreateNoteMutation();
 
   const { data, refetch: refetchNotes } = useGetAllNotesQuery({
     userId,
@@ -28,17 +29,41 @@ const Notes: FunctionComponent<INotesProps> = ({ userId, lessonId }) => {
       note: Yup.string().required("Please enter note content"),
     }),
     onSubmit: async (values, actions) => {
-      await createNote({
-        lessonId,
-        userId,
-        text: values.note,
-      });
-      await refetchNotes();
-      actions.resetForm();
-      toast.success("Note saved successfully");
+      try {
+        await createNote({
+          lessonId,
+          userId,
+          text: values.note,
+        });
+
+        actions.resetForm();
+      } catch (error) {
+        toast.error("Something went wrong");
+      }
     },
     validateOnMount: true,
   });
+
+  useEffect(() => {
+    if (!formik.isSubmitting) {
+      formik.validateForm();
+    }
+  }, [formik.isSubmitting]);
+
+  useEffect(() => {
+    if (createNoteResult.isError) {
+      toast.error("Something went wrong");
+    }
+  }, [createNoteResult.isError]);
+
+  useEffect(() => {
+    (async () => {
+      if (createNoteResult.isSuccess) {
+        toast.success("Note saved successfully");
+        await refetchNotes();
+      }
+    })();
+  }, [createNoteResult.isSuccess]);
 
   return (
     <Box>

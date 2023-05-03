@@ -14,13 +14,15 @@ const handler = async (
   res: NextApiResponse<IResponseSuccessData | IResponseFailureData>
 ) => {
   try {
-    const payload: Pick<Prisma.QuestionReplyCreateInput, "text" | "userImage"> =
-      req.body;
+    const payload: Pick<
+      Prisma.QuestionReplyCreateInput,
+      "text" | "userImage" | "userName"
+    > = req.body;
 
     const lessonId = req.query["lesson-id"] as string;
     const userId = req.query["user-id"] as string;
     const questionId = req.query["question-id"] as string;
-    const { userImage, text: questionReplyText } = payload;
+    const { userImage, text: questionReplyText, userName } = payload;
     if (!lessonId || !userId || !questionId) {
       return res.status(400).json({ error: "Bad request" });
     }
@@ -46,6 +48,7 @@ const handler = async (
           userId,
           lessonId,
           questionId,
+          userName,
         },
       });
       return res.status(200).json({ data: questionReply });

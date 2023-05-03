@@ -39,8 +39,10 @@ const handler = async (
         return res.status(403).json({ error: "Insufficient permissions" });
       }
 
-      const payload: Pick<Prisma.QuestionUpdateInput, "text" | "userImage"> =
-        req.body;
+      const payload: Pick<
+        Prisma.QuestionUpdateInput,
+        "text" | "userImage" | "userName"
+      > = req.body;
       const result = await prismaClient.question.update({
         where: {
           id: req.query.id as string,

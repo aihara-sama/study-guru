@@ -35,8 +35,10 @@ const handler = async (
       if (review.userId !== (req.query["user-id"] as string)) {
         return res.status(403).json({ error: "Insufficient permissions" });
       }
-      const payload: Pick<Prisma.ReviewUpdateInput, "text" | "userImage"> =
-        req.body;
+      const payload: Pick<
+        Prisma.ReviewUpdateInput,
+        "text" | "userImage" | "userName"
+      > = req.body;
 
       const result = await prismaClient.review.update({
         where: {

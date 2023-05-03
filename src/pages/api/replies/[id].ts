@@ -40,7 +40,7 @@ const handler = async (
       }
       const payload: Pick<
         Prisma.QuestionReplyUpdateInput,
-        "text" | "userImage"
+        "text" | "userImage" | "userName"
       > = req.body;
 
       const result = await prismaClient.questionReply.update({
