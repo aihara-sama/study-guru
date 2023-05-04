@@ -36,6 +36,9 @@ const handler = async (
         include: {
           question: true,
         },
+        orderBy: {
+          createdAt: "desc",
+        },
       });
       return res.status(200).json({ data: questionReply });
     }
@@ -50,6 +53,9 @@ const handler = async (
           questionId,
           userName,
         },
+        include: {
+          question: true,
+        },
       });
       return res.status(200).json({ data: questionReply });
     }
@@ -60,6 +66,8 @@ const handler = async (
       .setHeader("Allow", ["GET", "POST"])
       .end(`Method ${req.method} Not Allowed`);
   } catch (error) {
+    console.log({ error });
+
     return res.status(500).json({ error: "Something went wrong" });
   }
 };

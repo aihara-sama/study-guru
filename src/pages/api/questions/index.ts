@@ -23,7 +23,7 @@ const handler = async (
     const userId = req.query["user-id"] as string;
     const { userImage, text: questionText, userName } = payload;
 
-    if (!lessonId || !userId) {
+    if (!lessonId) {
       return res.status(400).json({ error: "Bad request" });
     }
 
@@ -36,11 +36,17 @@ const handler = async (
         include: {
           reply: true,
         },
+        orderBy: {
+          createdAt: "desc",
+        },
       });
       return res.status(200).json({ data: question });
     }
     // POST
     if (req.method === "POST") {
+      if (!lessonId || !userId) {
+        return res.status(400).json({ error: "Bad request" });
+      }
       const question = await prismaClient.question.create({
         data: { text: questionText, userImage, userId, lessonId, userName },
       });

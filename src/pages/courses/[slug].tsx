@@ -156,7 +156,12 @@ const CoursePage: NextPage<ICoursePageProps> = ({ course }) => {
                   <Notes lessonId={currentLesson.sys.id} userId={profile?.id} />
                 </TabPanel>
                 <TabPanel value="qa">
-                  <Questions />
+                  <Questions
+                    lessonId={currentLesson.sys.id}
+                    userId={profile?.id}
+                    userImage={profile?.image}
+                    userName={profile?.name}
+                  />
                 </TabPanel>
                 <TabPanel value="reviews">
                   <Reviews
