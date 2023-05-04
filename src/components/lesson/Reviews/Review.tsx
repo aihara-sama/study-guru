@@ -111,22 +111,26 @@ const Review: FunctionComponent<IReviewProps> = ({
         justifyContent="end"
       >
         <Box display="flex" gap={1} alignItems="center" mb={0.5}>
-          {isEditing ? (
-            <CheckIcon onClick={() => handleUpdateNote()} />
-          ) : (
-            <PencilIcon onClick={() => setIsEditing(true)} />
+          {review.userId === userId && (
+            <>
+              {isEditing ? (
+                <CheckIcon onClick={() => handleUpdateNote()} />
+              ) : (
+                <PencilIcon onClick={() => setIsEditing(true)} />
+              )}
+              <Box
+                display="flex"
+                sx={{
+                  "svg:hover path": {
+                    fill: (theme) => theme.palette.error.main,
+                  },
+                }}
+              >
+                <TrashIcon onClick={() => handleRemoveReview()} />
+              </Box>
+            </>
           )}
 
-          <Box
-            display="flex"
-            sx={{
-              "svg:hover path": {
-                fill: (theme) => theme.palette.error.main,
-              },
-            }}
-          >
-            <TrashIcon onClick={() => handleRemoveReview()} />
-          </Box>
           <Typography
             variant="caption"
             fontStyle="italic"
@@ -158,7 +162,7 @@ const Review: FunctionComponent<IReviewProps> = ({
           px={2}
         >
           <Typography lineHeight={1} fontSize={12} color="text.disabled">
-            {userName}
+            {review.userName}
           </Typography>
           <Typography
             ref={textRef}
